@@ -1,0 +1,14 @@
+[
+    {
+        "name": "response_to_human",
+        "description": "\nresponse_to_human: Useful for: Generating responses to user queries or statements. This tool is used to provide answers, explanations, or engage in conversation with the user.\n    Examples of use:\n        \"What is the capital of France?\" \u2192 \"The capital of France is Paris.\"\n        \"Tell me a joke.\" \u2192 \"Why did the scarecrow win an award? Because he was outstanding in his field!\"\n        \"How are you?\" \u2192 \"I'm doing well, thank you! How can I assist you today?\"\n"
+    },
+    {
+        "name": "calculator",
+        "description": "\ncalculator: Useful for: Solving mathematical expressions and answering math-related questions.\n    Examples of use:\n        \"What is 2 + 2?\" \u2192 2 + 2\n        \"Find the result of (8 * 32) ^ 27\" \u2192 (8 * 32) ** 27\n        \"Solve 4 - (2 * (7 + 6))\" \u2192 4 - (2 * (7 + 6))\n"
+    },
+    {
+        "name": "programmer",
+        "description": "\nprogrammer: Useful for: Generating a new tool when the user requests functionality that is not currently available. This tool sends a prompt to a programmer LLM to create the required function.\n    Examples of use:\n        \"I need a tool to convert text to Morse code.\" \u2192 The Programmer tool will be used to generate a text-to-Morse converter.\n        \"Can you create a function that summarizes text?\" \u2192 The Programmer tool will generate a text summarization tool.\n"
+    }
+]
