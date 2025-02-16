@@ -1,0 +1,34 @@
+[
+    {
+        "name": "decimal_to_binary",
+        "description": "Function Name: decimal_to_binary.  \nUseful for: Converting decimal numbers to their binary representations, helpful in programming, computer science, and electronics when working with binary data, debugging, or understanding binary number systems.  \nExamples of use:  \n- 'Convert 10 to binary' \u2192 \"1010\"  \n- 'What is the binary representation of 25?' \u2192 \"11001\"  \n- 'Change 128 to binary format' \u2192 \"10000000\"  \n- 'Find the binary equivalent of 255' \u2192 \"11111111\""
+    },
+    {
+        "name": "calculator",
+        "description": "\ncalculator: Useful for: Solving mathematical expressions and answering math-related questions.\n    Examples of use:\n        \"What is 2 + 2?\" \u2192 2 + 2\n        \"Find the result of (8 * 32) ^ 27\" \u2192 (8 * 32) ** 27\n        \"Solve 4 - (2 * (7 + 6))\" \u2192 4 - (2 * (7 + 6))\n"
+    },
+    {
+        "name": "programmer",
+        "description": "\nprogrammer: Useful for: Generating a new tool when the user requests functionality that is not currently available. This tool sends a prompt to a programmer LLM to create the required function.\n    Examples of use:\n        \"I need a tool to convert text to Morse code.\" \u2192 The Programmer tool will be used to generate a text-to-Morse converter.\n        \"Can you create a function that summarizes text?\" \u2192 The Programmer tool will generate a text summarization tool.\n"
+    },
+    {
+        "name": "get_current_time",
+        "description": "Function Name: get_current_time.  \nUseful for: Retrieving the current hour in 24-hour format, useful in applications such as scheduling, logging, or any scenario where the current hour is needed.  \nExamples of use:  \n- 'What is the current hour?' \u2192 14 (if the current time is 2 PM)  \n- 'Get the current hour for logging purposes' \u2192 08 (if the current time is 8 AM)  \n- 'Schedule a task based on the current hour' \u2192 22 (if the current time is 10 PM) \n\nNote: The input parameter in the function seems unnecessary as it doesn't affect the output. The function always returns the current hour. Consider removing the input parameter for clarity and simplicity."
+    },
+    {
+        "name": "text_to_morse",
+        "description": "Function Name: text_to_morse.  \nUseful for: Converting English text to Morse code, useful in applications such as communication systems, navigation, or accessibility tools where text needs to be represented in a unique, encoded format.  \nExamples of use:  \n- 'Convert \"Hello World\" to Morse code' \u2192 \".... . .-.. .-.. --- / .-- --- .-. .-.. -..\"  \n- 'Translate \"SOS\" to Morse code' \u2192 \"... --- ...\"  \n- 'Convert the sentence \"Hello, how are you?\" to Morse code' \u2192 \".... . .-.. .-.. --- / --..-- / .... --- - . / .- /.- .. .-.. --..--\"  \n- 'Encode the phrase \"Navigate to 123 Main St\" to Morse code' \u2192 \".--.--- --- -. / -. --- / .... . / --..-- / - .... . / ..- -. -.. / -- . ... ...\""
+    },
+    {
+        "name": "get_first_words",
+        "description": "Function Name: get_first_words.  \nUseful for: Extracting the first word of every line from text documents in various formats (txt, docx, pdf), useful in text analysis, preprocessing, or information retrieval tasks.  \nExamples of use:  \n- Extracting keywords or phrases from large documents for summarization or indexing purposes: `get_first_words(\"example.txt\")` \u2192 `[\"Hello\", \"This\", \"Is\"]`  \n- Preprocessing text data for machine learning models: `get_first_words(\"document.docx\")` \u2192 `[\"Introduction\", \"The\", \"Methodology\"]`  \n- Information retrieval tasks such as title extraction or author identification: `get_first_words(\"research_paper.pdf\")` \u2192 `[\"Abstract\", \"Introduction\", \"The\"]`  \n- Analyzing document structure or formatting: `get_first_words(\"example.docx\")` \u2192 `[\"Title\", \"Heading\", \"Subheading\"]`  \nNote: This function assumes that the documents are well-formatted and that the first word of each line is relevant to the analysis."
+    },
+    {
+        "name": "search_and_save_image",
+        "description": "\"Function Name: search_and_save_image.  \nUseful for: Searching and downloading images from the internet based on a given query, ideal for applications such as web scraping, data collection, or automated image processing.  \nExamples of use:  \n- Searching for a specific object or scene: 'Search for \"mountain\" and save the image' \u2192 Saves an image of a mountain to the 'example_data' folder.  \n- Gathering images for machine learning model training: 'Search for \"dog\" and save the image' \u2192 Saves an image of a dog to the 'example_data' folder, which can be used to train a model to recognize dogs.  \n- Automatically downloading images for a blog or website: 'Search for \"cityscape\" and save the image' \u2192 Saves an image of a cityscape to the 'example_data' folder, which can be used as a blog post thumbnail or header image.\""
+    },
+    {
+        "name": "online_question_answerer",
+        "description": "Function Name: online_question_answerer.  \nUseful for: Answering user-inputted questions by searching online sources such as Wikipedia and web pages, then providing a concise summary of the information found. Ideal for situations where a user needs to quickly find an answer to a question without having to manually browse through various online sources.  \nExamples of use:  \n- 'What is the definition of artificial intelligence?' \u2192 A concise summary of the Wikipedia article on artificial intelligence or a relevant web page.  \n- 'How does the human brain work?' \u2192 A brief summary of the brain's functions and structure from a reliable online source.  \n- 'What are the benefits of regular exercise?' \u2192 A summary of the advantages of exercise from a trusted health website or Wikipedia article.  \n- 'Who is the main character in the book \"To Kill a Mockingbird\"?' \u2192 A brief description of the character Scout Finch from a literary analysis website or Wikipedia summary.  \n- 'What are the symptoms of COVID-19?' \u2192 A concise list of symptoms from a reliable health organization's website or a relevant Wikipedia article. \n\nNote: The function's answer may vary depending on the online sources found and the relevance of the information to the user's question."
+    }
+]
