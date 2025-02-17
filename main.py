@@ -14,6 +14,11 @@ RESPOND_TO_HUMAN_ACTION = "response_to_human"
 MAX_HISTORY_LENGTH = 10
 DEFAULT_TOOLS = ["response_to_human", "programmer", "calculator", "teacher"]
 
+# Colorst to use in terminal: User: Yellow, Bot: blue, tool: purple
+USER_TEXT_COLOR = "\033[33m"
+BOT_TEXT_COLOR = "\033[34m"
+TOOL_TEXT_COLOR = "\033[35m"
+END_COLOR = "\033[0m"
 
 def read_env():
     load_dotenv()
@@ -88,7 +93,7 @@ def process_user_message(client, message, chat_history):
     response = chat_completion.choices[0].message.content
 
     action, action_input = parse_response(response)
-    print(f"Using action: {action}")
+    print(f"{TOOL_TEXT_COLOR}Using action: {action}{END_COLOR}")
 
     try:
         if action in DEFAULT_TOOLS:
@@ -106,7 +111,6 @@ def process_user_message(client, message, chat_history):
         
         if action not in [RESPOND_TO_HUMAN_ACTION, PROGRAMMER_ACTION]:
             tool_output = f"{{\"question\": \"{message}\", \"tool\": \"{action}\", \"output\": \"{response}\"}}"
-            print(f"Tool output: {tool_output}")
             response = process_user_message(client, tool_output, chat_history)
 
     except Exception as e:
@@ -132,12 +136,12 @@ def chat_loop(client):
     running = True
     chat_history = []
     while running:
-        message = input("You: ")
+        message = input(f"{USER_TEXT_COLOR}You: {END_COLOR}")
         if message == "exit":
             running = False
             break
         response = process_user_message(client, message, chat_history)
-        print(f"{BOT_NAME}: {response}")
+        print(f"{BOT_TEXT_COLOR}{BOT_NAME}: {response}{END_COLOR}")
 
         # Save chat history
         chat_history = update_history(chat_history, message, response)
