@@ -3,3 +3,4 @@ __pycache__/
 .vscode/
 tools/generated/
 tools/generated_tool_descriptions.json
+long_term_memory/

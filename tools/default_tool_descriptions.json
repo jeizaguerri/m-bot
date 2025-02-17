@@ -10,5 +10,9 @@
     {
         "name": "programmer",
         "description": "\nprogrammer: Useful for: Generating a new tool when the user requests functionality that is not currently available. This tool sends a prompt to a programmer LLM to create the required function.\n    Examples of use:\n        \"I need a tool to convert text to Morse code.\" \u2192 The Programmer tool will be used to generate a text-to-Morse converter.\n        \"Can you create a function that summarizes text?\" \u2192 The Programmer tool will generate a text summarization tool.\n"
+    },
+    {
+        "name": "teacher",
+        "description": "\nteacher: Useful for: Remembering relevant information that may be useful in the future and adapting behavior based on user requests. This tool stores details shared by the user, such as preferences, facts, or requested changes in interaction style, so that it can be retrieved when needed.\n    Examples of use:\n        \"Remember that I prefer short answers.\" \u2192 The Teacher tool will store this preference and generate concise responses in the future.\n        \"Call me Alex from now on.\" \u2192 The Teacher tool will remember to address the user as Alex.\n        \"I like detailed explanations for technical topics.\" \u2192 The Teacher tool will ensure future technical responses are in-depth.\n"
     }
-]
+    ]

@@ -2,16 +2,17 @@ from groq import Groq
 import os
 from dotenv import load_dotenv
 from tool_use import load_tool_descriptions, save_tool_description, get_tool_descriptions, import_and_execute
-from prompts import get_system_prompt
+from prompts import get_system_prompt, RELEVANT_INFORMATION_PREFIX, USER_MESSAGE_PREFIX
+from long_term_memory import load_db, search_db
 
 BOT_NAME = "M-Bot"
-MODEL = "llama3-70b-8192"
+MODEL = "llama-3.3-70b-versatile"
 ACTION_PREFIX = "Action:"
 ACTION_INPUT_PREFIX = "Action Input:"
 PROGRAMMER_ACTION = "programmer"
 RESPOND_TO_HUMAN_ACTION = "response_to_human"
 MAX_HISTORY_LENGTH = 10
-DEFAULT_TOOLS = ["response_to_human", "programmer", "calculator"]
+DEFAULT_TOOLS = ["response_to_human", "programmer", "calculator", "teacher"]
 
 
 def read_env():
@@ -25,12 +26,25 @@ def get_groq_instance():
     return client
 
 
-def create_messages(message, chat_history):
+def create_messages(message, chat_history, relevant_information):
+    # Add relevant information to the chat history to the user message
+    message = f"{USER_MESSAGE_PREFIX}\n" + message
+
+    if len(relevant_information) > 0:
+        message = message + f"\n{RELEVANT_INFORMATION_PREFIX}"
+        for i in range(len(relevant_information)):
+            message = message + f"\n{i}: {relevant_information[i]}"
+
+    # Add system prompt
     messages = [{
         "role": "system",
         "content": get_system_prompt(get_tool_descriptions(), BOT_NAME)
     }]
+
+    # Add chat history
     messages = messages + chat_history
+
+    # Add user message
     messages = messages + [
     {
         "role": "user",
@@ -59,9 +73,13 @@ def parse_response(response):
     return action, action_input
 
 def process_user_message(client, message, chat_history):
+    # Find information related to the user message in the database
+    relevant_information = search_db(message)
+
+    # Get response
     chat_completion = client.chat.completions.create(
         model = MODEL,
-        messages = create_messages(message, chat_history),
+        messages = create_messages(message, chat_history, relevant_information),
         temperature=0.6,
         max_completion_tokens=1024,
         top_p=0.95,
@@ -106,6 +124,10 @@ def update_history(chat_history, user_message, bot_response):
     return chat_history
 
 
+def end_chat():
+    print("Goodbye!")
+    
+
 def chat_loop(client):
     running = True
     chat_history = []
@@ -120,11 +142,12 @@ def chat_loop(client):
         # Save chat history
         chat_history = update_history(chat_history, message, response)
     
-    print("Goodbye!")
+    end_chat()
 
 
 def main():
     read_env()
+    load_db()
     load_tool_descriptions()
     client = get_groq_instance()
     chat_loop(client)

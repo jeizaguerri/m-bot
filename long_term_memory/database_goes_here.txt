@@ -1,0 +1,2 @@
+Yet another file whose sole porpuse is to track it's parent directory in the repository.
+This folder is effectively the hippocampus of the bot, please handle with care. 
