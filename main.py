@@ -62,11 +62,18 @@ def parse_response(response):
     # Extract line that starts with "Action:"
     action = None
     action_input = None
+    action_input_started = False
     for line in response.split("\n"):
         if line.startswith(ACTION_PREFIX):
             action = line.split(":")[1].strip()
         elif line.startswith(ACTION_INPUT_PREFIX):
+            # All lines after the first line that starts with "Action Input:" are part of the action input
+            action_input_started = True
             action_input = line.split(":")[1].strip()
+        
+        elif action_input_started:
+            action_input = action_input + "\n" + line.strip()
+            
     
     if action is None:
         action = "response_to_human"
