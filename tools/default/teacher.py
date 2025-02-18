@@ -1,28 +1,10 @@
-from groq import Groq
-import os
 from long_term_memory import add_message_to_db
 from prompts import TEACHER_PREPROMPT
+from utils import get_groq_instance, generate_messages
 
 TEACHER_MODEL = "llama-3.3-70b-versatile"
 
-def get_groq_instance():
-    client = Groq(
-        api_key=os.environ.get("GROQ_API_KEY"),
-    )
-    return client
 
-
-def generate_messages(system_prompt, prompt):
-    messages = [{
-        "role": "system",
-        "content": system_prompt
-    },
-    {
-        "role": "user",
-        "content": prompt
-    }]
-
-    return messages
 
 
 def generate_fact(message):
