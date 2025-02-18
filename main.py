@@ -13,11 +13,13 @@ PROGRAMMER_ACTION = "programmer"
 RESPOND_TO_HUMAN_ACTION = "response_to_human"
 MAX_HISTORY_LENGTH = 10
 DEFAULT_TOOLS = ["response_to_human", "programmer", "calculator", "teacher"]
+ERROR_MESSAGE_PREFIX = "Error:"
 
-# Colorst to use in terminal: User: Yellow, Bot: blue, tool: purple
+# Colorst to use in terminal: User: Yellow, Bot: blue, tool: purple, error: red
 USER_TEXT_COLOR = "\033[33m"
 BOT_TEXT_COLOR = "\033[34m"
 TOOL_TEXT_COLOR = "\033[35m"
+ERROR_TEXT_COLOR = "\033[31m"
 END_COLOR = "\033[0m"
 
 def read_env():
@@ -69,7 +71,8 @@ def parse_response(response):
         elif line.startswith(ACTION_INPUT_PREFIX):
             # All lines after the first line that starts with "Action Input:" are part of the action input
             action_input_started = True
-            action_input = line.split(":")[1].strip()
+            action_input = line.split(":")[1:]
+            action_input = ":".join(action_input).strip()
         
         elif action_input_started:
             action_input = action_input + "\n" + line.strip()
@@ -135,9 +138,9 @@ def update_history(chat_history, user_message, bot_response):
     return chat_history
 
 
-def end_chat():
-    print("Goodbye!")
-    
+def is_error_response(response):
+    return response.startswith(ERROR_MESSAGE_PREFIX)
+
 
 def chat_loop(client):
     running = True
@@ -147,13 +150,15 @@ def chat_loop(client):
         if message == "exit":
             running = False
             break
+
         response = process_user_message(client, message, chat_history)
-        print(f"{BOT_TEXT_COLOR}{BOT_NAME}: {response}{END_COLOR}")
+        if is_error_response(response):
+            print(f"{BOT_TEXT_COLOR}{BOT_NAME}: {ERROR_TEXT_COLOR}{response}{END_COLOR}")
+        else:
+            print(f"{BOT_TEXT_COLOR}{BOT_NAME}: {response}{END_COLOR}")
 
         # Save chat history
         chat_history = update_history(chat_history, message, response)
-    
-    end_chat()
 
 
 def main():

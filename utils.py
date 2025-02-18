@@ -8,12 +8,16 @@ def get_groq_instance():
     return client
 
 
-def generate_messages(system_prompt, prompt):
+def generate_messages(system_prompt, prompt, chat_history = None):
     messages = [{
         "role": "system",
         "content": system_prompt
-    },
-    {
+    }]
+
+    if chat_history and len(chat_history) > 0:
+        messages = messages + chat_history
+
+    messages = messages + [{
         "role": "user",
         "content": prompt
     }]
