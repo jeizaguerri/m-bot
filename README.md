@@ -51,7 +51,7 @@ With the environment set up and the `.env` file configured, you can now run the 
 python main.py
 ```
 
-Please notice that packages used by the tools created by the bot are not automatically installed. You will need to manually install them in order for this tools to work.
+Please notice that packages used in the tools created by the bot are not automatically installed. You will need to manually install them in order for this tools to work.
 
 
 ## Useful messages
