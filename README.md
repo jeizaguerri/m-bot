@@ -40,7 +40,7 @@ conda activate mbot_env
 Create a `.env` file in the root directory of the project and add your GROQ API key to it:
 
 ```
-GROQ_API_KEY=your_groq_api_key_here
+GROQ_API_KEY="your_groq_api_key_here"
 ```
 
 ### 3. Run the Project
