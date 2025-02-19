@@ -4,23 +4,7 @@ from dotenv import load_dotenv
 from tool_use import load_tool_descriptions, save_tool_description, get_tool_descriptions, import_and_execute
 from prompts import get_system_prompt, RELEVANT_INFORMATION_PREFIX, USER_MESSAGE_PREFIX
 from long_term_memory import load_db, search_db
-
-BOT_NAME = "M-Bot"
-MODEL = "llama-3.3-70b-versatile"
-ACTION_PREFIX = "Action:"
-ACTION_INPUT_PREFIX = "Action Input:"
-PROGRAMMER_ACTION = "programmer"
-RESPOND_TO_HUMAN_ACTION = "response_to_human"
-MAX_HISTORY_LENGTH = 10
-DEFAULT_TOOLS = ["response_to_human", "programmer", "calculator", "teacher"]
-ERROR_MESSAGE_PREFIX = "Error:"
-
-# Colorst to use in terminal: User: Yellow, Bot: blue, tool: purple, error: red
-USER_TEXT_COLOR = "\033[33m"
-BOT_TEXT_COLOR = "\033[34m"
-TOOL_TEXT_COLOR = "\033[35m"
-ERROR_TEXT_COLOR = "\033[31m"
-END_COLOR = "\033[0m"
+from constants import MODEL, BOT_NAME, MAX_HISTORY_LENGTH, ACTION_PREFIX, ACTION_INPUT_PREFIX, ERROR_MESSAGE_PREFIX, DEFAULT_TOOLS, RESPOND_TO_HUMAN_ACTION, PROGRAMMER_ACTION, TOOL_TEXT_COLOR, ERROR_TEXT_COLOR, USER_TEXT_COLOR, BOT_TEXT_COLOR, END_COLOR
 
 def read_env():
     load_dotenv()
@@ -162,6 +146,18 @@ def chat_loop(client):
 
 
 def main():
+    """
+    Session variables:
+    - user_id: User ID
+    - session_id: Session ID
+    - client: Groq client
+    - chat_history: List of dictionaries with the chat history
+    - tool_descriptions: List of dictionaries with the tool descriptions
+    - db: List of dictionaries with the database entries
+    - 
+    """
+
+
     read_env()
     load_db()
     load_tool_descriptions()

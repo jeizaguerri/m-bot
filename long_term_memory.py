@@ -2,9 +2,7 @@ import faiss
 import numpy as np
 from sentence_transformers import SentenceTransformer
 import os
-
-INDEX_PATH = 'long_term_memory/index.faiss'
-MESSAGES_DB_PATH = 'long_term_memory/messages_db.txt'
+from constants import INDEX_PATH, MESSAGES_DB_PATH
 
 # Embedding models
 embedding_model = SentenceTransformer('paraphrase-MiniLM-L6-v2')

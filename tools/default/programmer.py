@@ -1,9 +1,6 @@
 from prompts import PROGRAMMER_SYSTEM_PROMPT, DESCRIPTOR_SYSTEM_PROMPT
 from utils import get_groq_instance, generate_messages
-
-TOOLS_DIR = "tools/generated/"
-PROGRAMMER_MODEL = "llama-3.3-70b-versatile"
-DESCRIPTOR_MODEL = "llama-3.3-70b-versatile"
+from constants import PROGRAMMER_MODEL, DESCRIPTOR_MODEL, TOOLS_DIR
 
 
 def generate_tool_code(program_prompt):

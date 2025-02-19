@@ -1,10 +1,7 @@
 from long_term_memory import add_message_to_db
 from prompts import TEACHER_PREPROMPT
 from utils import get_groq_instance, generate_messages
-
-TEACHER_MODEL = "llama-3.3-70b-versatile"
-
-
+from constants import TEACHER_MODEL
 
 
 def generate_fact(message):

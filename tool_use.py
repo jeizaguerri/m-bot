@@ -2,9 +2,9 @@ import importlib.util
 import sys
 import json
 import os
+from constants import DEFAULT_TOOL_DESCRIPTIONS_FILE, GENERATED_TOOL_DESCRIPTIONS_FILE
 
-DEFAULT_TOOL_DESCRIPTIONS_FILE = "tools/default_tool_descriptions.json"
-GENERATED_TOOL_DESCRIPTIONS_FILE = "tools/generated_tool_descriptions.json"
+
 default_tool_descriptions = []
 generated_tool_descriptions = []
 
