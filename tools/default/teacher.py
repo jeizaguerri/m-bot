@@ -4,7 +4,7 @@ from utils import get_groq_instance, generate_messages
 from constants import TEACHER_MODEL
 
 
-def generate_fact(message):
+def generate_fact(fact_creator_client, message):
     # Prepare messages
     messages = generate_messages(TEACHER_PREPROMPT, message)
 
@@ -19,13 +19,11 @@ def generate_fact(message):
     return fact
 
 
-def teacher(message):
+def teacher(session, message):
     # Convert message to fact
-    fact = generate_fact(message)
+    fact = generate_fact(session.client, message)
 
     # Add fact to database
-    add_message_to_db(fact)
+    add_message_to_db(session, fact)
 
     return "Information added to memory:" + fact
-
-fact_creator_client = get_groq_instance()

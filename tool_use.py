@@ -3,13 +3,14 @@ import sys
 import json
 import os
 from constants import DEFAULT_TOOL_DESCRIPTIONS_FILE, GENERATED_TOOL_DESCRIPTIONS_FILE
+from utils import get_session_directory
 
 
-default_tool_descriptions = []
-generated_tool_descriptions = []
+def load_tool_descriptions(user_id, session_id):
+    default_tool_descriptions = []
+    generated_tool_descriptions = []
+    generated_tool_descriptions_path = get_session_directory(user_id, session_id) + GENERATED_TOOL_DESCRIPTIONS_FILE
 
-
-def load_tool_descriptions():
     # Default tools
     if not os.path.exists(DEFAULT_TOOL_DESCRIPTIONS_FILE):
         raise FileNotFoundError(f"Default tool descriptions file not found at {DEFAULT_TOOL_DESCRIPTIONS_FILE}")
@@ -20,21 +21,25 @@ def load_tool_descriptions():
             default_tool_descriptions.append(tool["description"])
 
     # Generated tools
-    if os.path.exists(GENERATED_TOOL_DESCRIPTIONS_FILE):
-        with open(GENERATED_TOOL_DESCRIPTIONS_FILE, "r") as file:
+    if os.path.exists(generated_tool_descriptions_path):
+        with open(generated_tool_descriptions_path, "r") as file:
             descriptions = json.load(file)
             for tool in descriptions:
                 generated_tool_descriptions.append(tool["description"])
     else:
-        with open(GENERATED_TOOL_DESCRIPTIONS_FILE, "w") as file:
+        with open(generated_tool_descriptions_path, "w") as file:
             json.dump([], file)
+    
+    return default_tool_descriptions, generated_tool_descriptions
 
-def save_tool_description(name, description):
-    # In memory
-    generated_tool_descriptions.append(description)
+def save_tool_description(session, name, description):
+    # Memory
+    session.generated_tool_descriptions.append(description)
 
     # Persistent
-    with open(GENERATED_TOOL_DESCRIPTIONS_FILE, "r") as file:
+    generated_tool_descriptions_path = get_session_directory(session.user_id, session.session_id) + GENERATED_TOOL_DESCRIPTIONS_FILE
+
+    with open(generated_tool_descriptions_path, "r") as file:
         descriptions = json.load(file)
         if not any(tool["name"] == name for tool in descriptions):
             descriptions.append({
@@ -44,7 +49,7 @@ def save_tool_description(name, description):
         else:
             raise ValueError(f"Tool with name {name} already exists")
     
-    with open(GENERATED_TOOL_DESCRIPTIONS_FILE, "w") as file:
+    with open(generated_tool_descriptions_path, "w") as file:
         json.dump(descriptions, file)
 
 
@@ -70,5 +75,6 @@ def import_and_execute(file_path, function_name, function_inputs):
     else:
         raise AttributeError(f"Function '{function_name}' not found in {file_path}")
     
-def get_tool_descriptions():
+def get_tool_descriptions(session):
+    default_tool_descriptions, generated_tool_descriptions = session.default_tool_descriptions, session.generated_tool_descriptions
     return default_tool_descriptions + generated_tool_descriptions

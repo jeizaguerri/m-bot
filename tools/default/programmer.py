@@ -1,9 +1,9 @@
 from prompts import PROGRAMMER_SYSTEM_PROMPT, DESCRIPTOR_SYSTEM_PROMPT
-from utils import get_groq_instance, generate_messages
+from utils import get_groq_instance, generate_messages, get_session_directory
 from constants import PROGRAMMER_MODEL, DESCRIPTOR_MODEL, TOOLS_DIR
 
 
-def generate_tool_code(program_prompt):
+def generate_tool_code(programmer_client, program_prompt):
     # Prepare messages
     messages = generate_messages(PROGRAMMER_SYSTEM_PROMPT, program_prompt)
 
@@ -22,7 +22,7 @@ def generate_tool_code(program_prompt):
 
     return code
 
-def describe_tool(code):
+def describe_tool(descriptor_client, code):
     # Extract name from code (def {name})
     name = code.split("(")[0].split("def ")[1]
 
@@ -41,17 +41,14 @@ def describe_tool(code):
 
     
 
-def save_tool(name, code):
+def save_tool(session, name, code):
     # Create file
-    with open(TOOLS_DIR + name + ".py", "w") as f:
+    with open(get_session_directory(session.user_id, session.session_id) + TOOLS_DIR + name + ".py", "w") as f:
         f.write(code)
 
 
-def programmer(program_prompt):
-    code = generate_tool_code(program_prompt)
-    name, description = describe_tool(code)
-    save_tool(name, code)
+def programmer(session, program_prompt):
+    code = generate_tool_code(session.client, program_prompt)
+    name, description = describe_tool(session.client, code)
+    save_tool(session, name, code)
     return name, description
-
-programmer_client = get_groq_instance()
-descriptor_client = get_groq_instance()

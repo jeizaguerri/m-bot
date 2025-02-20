@@ -4,10 +4,13 @@ MODEL = "llama-3.3-70b-versatile"
 ACTION_PREFIX = "Action:"
 ACTION_INPUT_PREFIX = "Action Input:"
 PROGRAMMER_ACTION = "programmer"
+TEACHER_ACTION = "teacher"
 RESPOND_TO_HUMAN_ACTION = "response_to_human"
 MAX_HISTORY_LENGTH = 10
 DEFAULT_TOOLS = ["response_to_human", "programmer", "calculator", "teacher"]
 ERROR_MESSAGE_PREFIX = "Error:"
+SESSION_CONFIG_FILE = "config.json"
+HISTORY_FILE = "history.json"
 
 # Colors to use in terminal: User: Yellow, Bot: blue, tool: purple, error: red
 USER_TEXT_COLOR = "\033[33m"
@@ -21,6 +24,7 @@ DEFAULT_TOOL_DESCRIPTIONS_FILE = "tools/default_tool_descriptions.json"
 GENERATED_TOOL_DESCRIPTIONS_FILE = "tools/generated_tool_descriptions.json"
 
 # Long-term memory
+FAISS_DIMENSION = 384 
 INDEX_PATH = 'long_term_memory/index.faiss'
 MESSAGES_DB_PATH = 'long_term_memory/messages_db.txt'
 
