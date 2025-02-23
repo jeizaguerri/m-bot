@@ -1,14 +1,38 @@
 import streamlit as st
 from main import *
 from streamlit.components.v1 import html
+from constants import SESSION_COUNTER_FILE
+import torch
+
+st.set_page_config(layout="wide")
+torch.classes.__path__ = []
+
+# Function to read the counter from a file
+def read_counter():
+    if os.path.exists(SESSION_COUNTER_FILE):
+        with open(SESSION_COUNTER_FILE, "r") as f:
+            return int(f.read().strip())
+    return 0
+
+# Function to update the counter
+def write_counter(value):
+    with open(SESSION_COUNTER_FILE, "w") as f:
+        f.write(str(value))
+
+# Initialize counter on first load
+if "counter" not in st.session_state:
+    st.session_state.counter = read_counter() + 1  # Increment on new page load
+    write_counter(st.session_state.counter)  # Save updated count
+
 
 user_id = 0
-session_id = 0
+session_id = st.session_state.counter
 session = create_chat_session(user_id, session_id, os.getenv("GROQ_API_KEY"))
 descriptions = session.default_tool_descriptions + session.generated_tool_descriptions
 tool_names = session.default_tool_names + session.generated_tool_names
 
-st.set_page_config(layout="wide")
+
+
 
 
 # Api key on the bottom

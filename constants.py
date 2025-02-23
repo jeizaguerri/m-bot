@@ -35,3 +35,6 @@ DESCRIPTOR_MODEL = "llama-3.3-70b-versatile"
 
 # Teacher
 TEACHER_MODEL = "llama-3.3-70b-versatile"
+
+# For the ui
+SESSION_COUNTER_FILE = "session_counter.txt"

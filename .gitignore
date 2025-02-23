@@ -6,3 +6,4 @@ tools/generated_tool_descriptions.json
 long_term_memory/
 user_data/
 ui/
+session_counter.txt
