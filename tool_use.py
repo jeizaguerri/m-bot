@@ -9,6 +9,8 @@ from utils import get_session_directory
 def load_tool_descriptions(user_id, session_id):
     default_tool_descriptions = []
     generated_tool_descriptions = []
+    default_tool_names = []
+    generated_tool_names = []
     generated_tool_descriptions_path = get_session_directory(user_id, session_id) + GENERATED_TOOL_DESCRIPTIONS_FILE
 
     # Default tools
@@ -19,6 +21,7 @@ def load_tool_descriptions(user_id, session_id):
         descriptions = json.load(file)
         for tool in descriptions:
             default_tool_descriptions.append(tool["description"])
+            default_tool_names.append(tool["name"])
 
     # Generated tools
     if os.path.exists(generated_tool_descriptions_path):
@@ -26,11 +29,12 @@ def load_tool_descriptions(user_id, session_id):
             descriptions = json.load(file)
             for tool in descriptions:
                 generated_tool_descriptions.append(tool["description"])
+                generated_tool_names.append(tool["name"])
     else:
         with open(generated_tool_descriptions_path, "w") as file:
             json.dump([], file)
     
-    return default_tool_descriptions, generated_tool_descriptions
+    return default_tool_descriptions, generated_tool_descriptions, default_tool_names, generated_tool_names
 
 def save_tool_description(session, name, description):
     # Memory

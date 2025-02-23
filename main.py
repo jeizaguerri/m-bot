@@ -5,8 +5,8 @@ from dotenv import load_dotenv
 from tool_use import load_tool_descriptions, save_tool_description, get_tool_descriptions, import_and_execute
 from prompts import get_system_prompt, RELEVANT_INFORMATION_PREFIX, USER_MESSAGE_PREFIX
 from long_term_memory import load_db, search_db
-from constants import MODEL, BOT_NAME, MAX_HISTORY_LENGTH, HISTORY_FILE, ACTION_PREFIX, ACTION_INPUT_PREFIX, ERROR_MESSAGE_PREFIX, DEFAULT_TOOLS, RESPOND_TO_HUMAN_ACTION, PROGRAMMER_ACTION, TEACHER_ACTION, SESSION_CONFIG_FILE, TOOL_TEXT_COLOR, ERROR_TEXT_COLOR, USER_TEXT_COLOR, BOT_TEXT_COLOR, END_COLOR
-from utils import get_session_directory
+from constants import MODEL, BOT_NAME, MAX_HISTORY_LENGTH, HISTORY_FILE, ACTION_PREFIX, ACTION_INPUT_PREFIX, ERROR_MESSAGE_PREFIX, DEFAULT_TOOLS, RESPOND_TO_HUMAN_ACTION, PROGRAMMER_ACTION, TEACHER_ACTION, SESSION_CONFIG_FILE, TOOL_TEXT_COLOR, ERROR_TEXT_COLOR, USER_TEXT_COLOR, BOT_TEXT_COLOR, END_COLOR, TOOLS_DIR
+from utils import get_session_directory, get_groq_instance_from_api_key
 from tools.default.programmer import programmer
 from tools.default.teacher import teacher
 
@@ -105,9 +105,9 @@ def process_user_message(session, message, chat_history):
 
     try:
         if action in DEFAULT_TOOLS:
-            tool_folder = "tools/default"
+            tool_folder = "tools/default/"
         else:
-            tool_folder = "tools/generated"
+            tool_folder = get_session_directory(session.user_id, session.session_id)+TOOLS_DIR
 
         if action == PROGRAMMER_ACTION:
             name, description = programmer(session, action_input)
@@ -116,7 +116,7 @@ def process_user_message(session, message, chat_history):
         elif action == TEACHER_ACTION:
             response = teacher(session, action_input)
         else:
-            response = import_and_execute(f"{tool_folder}/{action}.py", action, [action_input])
+            response = import_and_execute(f"{tool_folder}{action}.py", action, [action_input])
 
         if action not in [RESPOND_TO_HUMAN_ACTION, PROGRAMMER_ACTION]:
             tool_output = f"{{\"question\": \"{message}\", \"tool\": \"{action}\", \"output\": \"{response}\"}}"
@@ -141,19 +141,26 @@ def load_history(session):
 
 
 def update_history(session, user_message, bot_response):
-    # Update persistent chat history
-    with open(get_session_directory(session.user_id, session.session_id) + HISTORY_FILE, "w") as file:
-        json.dump(session.chat_history, file)
 
     # Update in-memory chat history
     session.chat_history.append({"role": "user", "content": str(user_message)})
     session.chat_history.append({"role": "assistant", "content": str(bot_response)})
+
+    # Update persistent chat history
+    with open(get_session_directory(session.user_id, session.session_id) + HISTORY_FILE, "w") as file:
+        json.dump(session.chat_history, file)
         
     return session.chat_history
 
 
 def is_error_response(response):
     return response.startswith(ERROR_MESSAGE_PREFIX)
+
+
+def chat_step(session, message):
+    response = process_user_message(session, message, session.chat_history[:MAX_HISTORY_LENGTH])
+    update_history(session, message, response)
+    return response
 
 
 def chat_loop(session):
@@ -175,24 +182,24 @@ def chat_loop(session):
 
 
 class ChatSession:
-    def __init__(self, user_id, session_id):
+    def __init__(self, user_id, session_id, groq_api_key=None):
         # Check if the directories exist
         if not os.path.exists(get_session_directory(user_id, session_id)):
             raise FileNotFoundError(f"Session directory not found for user {user_id} and session {session_id}")
 
         self.user_id = user_id
         self.session_id = session_id
-        self.client = get_groq_instance(user_id, session_id)
+        if groq_api_key: self.client = get_groq_instance_from_api_key(groq_api_key)
+        else: self.client = None
         self.chat_history = load_history(self)
-        self.default_tool_descriptions, self.generated_tool_descriptions = load_tool_descriptions(user_id, session_id)
+        self.default_tool_descriptions, self.generated_tool_descriptions, self.default_tool_names, self.generated_tool_names = load_tool_descriptions(user_id, session_id)
         self.index, self.messages_db = load_db(user_id, session_id)
 
 
-def create_chat_session(user_id, session_id, groq_api_key):
+def create_chat_session(user_id, session_id, groq_api_key = None):
     # Check if the directories exist
     if os.path.exists(get_session_directory(user_id, session_id)):
-        print(f"Session directory already exists for user {user_id} and session {session_id}")
-        return ChatSession(user_id, session_id)
+        return ChatSession(user_id, session_id, groq_api_key)
     
     if not os.path.exists("user_data"):
         os.mkdir("user_data")
@@ -206,9 +213,10 @@ def create_chat_session(user_id, session_id, groq_api_key):
     os.mkdir(session_directory + "tools")
     os.mkdir(session_directory + "tools/generated")
     with open(get_session_directory(user_id, session_id) + SESSION_CONFIG_FILE, "w") as file:
-        json.dump({"GROQ_API_KEY": groq_api_key}, file)
+        if groq_api_key:
+            json.dump({"GROQ_API_KEY": groq_api_key}, file)
 
-    return ChatSession(user_id, session_id)
+    return ChatSession(user_id, session_id, groq_api_key)
 
 
 def main():

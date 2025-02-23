@@ -19,6 +19,14 @@ def get_groq_instance(user_id, session_id):
     return client
 
 
+def get_groq_instance_from_api_key(groq_api_key):
+    client = Groq(
+        api_key=groq_api_key,
+    )
+
+    return client
+
+
 def generate_messages(system_prompt, prompt, chat_history = None):
     messages = [{
         "role": "system",
