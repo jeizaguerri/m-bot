@@ -25,13 +25,13 @@ First, create a virtual environment and install the necessary dependencies:
 ```sh
 python -m venv venv
 source venv/bin/activate  # On Windows use `venv\Scripts\activate`
-pip install -r environments/requirements.txt
+pip install -r requirements.txt
 ```
 
 #### 1.2 Using a Conda Environment
 
 ```sh
-conda env create -f environments/environment.yaml
+conda env create -f environment.yaml
 conda activate mbot_env
 ```
 
