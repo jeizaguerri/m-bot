@@ -1,8 +1,10 @@
-# M-Bot
-
+# **Hey, this is** <span style="color:lightblue;">**M-BOT**</span>
 ## Introduction
 
-M-Bot is a versatile and powerful AI bot designed to automate various tasks and processes. M-Bot not only leverages existing tools to perform its tasks but also has the capability to create new tools as needed. This makes it highly adaptable and capable of handling a wide range of automation scenarios.
+M-Bot is a versatile and powerful AI agent designed to automate various tasks and processes. M-Bot not only leverages existing tools to perform its tasks but also has the capability to create new tools as needed. This makes it highly adaptable and capable of handling a wide range of scenarios.
+
+## Try it out!
+You can check out M-bot [here](https://huggingface.co/spaces/jeizaguerri/m-bot). Keep in mind that you will need a [Groq API key](https://console.groq.com/keys) to use it.
 
 ## Capabilities
 
@@ -11,6 +13,7 @@ M-Bot is a versatile and powerful AI bot designed to automate various tasks and 
 - Tool creation
 - Chat history
 - Long term memory (faiss + facts DB)
+
 
 ## Getting Started
 
